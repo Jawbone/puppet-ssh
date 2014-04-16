@@ -1,3 +1,4 @@
+# Install and configure ssh client
 class ssh::client(
   $ensure  = present,
   $options = {}

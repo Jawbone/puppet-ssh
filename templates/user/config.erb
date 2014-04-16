@@ -1,0 +1,10 @@
+<% @options.each do |k,v| -%>
+<% if v.kind_of?(Hash) -%>
+<%= k %>
+    <% v.each do |opt, val| -%>
+    <%= opt -%> <%= val %>
+    <% end -%>
+<% else -%>
+<%= k -%> <%= v %>
+<% end -%>
+<% end -%>
