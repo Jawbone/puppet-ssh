@@ -1,13 +1,15 @@
 class ssh::server(
-  $ensure          = present,
+  $ensure               = present,
   $storeconfigs_enabled = true,
-  $options         = {}
+  $options              = {}
 ) inherits ssh::params {
   $merged_options = merge($ssh::params::sshd_default_options, $options)
 
   include ssh::server::install
   include ssh::server::config
   include ssh::server::service
+
+  File[$ssh::params::sshd_config] ~> Service[$ssh::params::service_name]
 
   anchor { 'ssh::server::start': }
   anchor { 'ssh::server::end': }
@@ -25,8 +27,7 @@ class ssh::server(
     Class['ssh::hostkeys'] ->
     Class['ssh::knownhosts'] ->
     Anchor['ssh::server::end']
-  }
-  else {
+  } else {
     Anchor['ssh::server::start'] ->
     Class['ssh::server::install'] ->
     Class['ssh::server::config'] ~>
